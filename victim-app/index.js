@@ -27,7 +27,9 @@ app.get("/", (req, res) => {
 
   fs.readFile("./index.html", "utf8", (err, data) => {
     // Insert message as JSON string into the HTML (e.g., replace a placeholder)
-    const html = data.replace("{{message}}", message || "No message");
+    const html = data
+      .replace("{{message}}", message || "No message")
+      .replace("{{cookie}}", req.cookies.auth || "No cookie");
 
     res.send(html);
   });
