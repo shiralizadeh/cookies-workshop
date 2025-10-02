@@ -37,7 +37,7 @@ app.get("/image.jpg", (req, res) => {
   if (req.cookies.auth) {
     res.sendFile("assets/image.jpg", { root: "./" });
   } else {
-    res.sendFile("assets/placeholder.jpg", { root: "./" });
+    res.sendFile("assets/placeholder.png", { root: "./" });
   }
 });
 
@@ -47,22 +47,20 @@ app.get("/api/get", (req, res) => {
       message: `Hello world ${decodeBase64(req.cookies.auth)}!`,
     });
   } else {
-    res.send({
+    res.status(401).send({
       message: "Unauthorized",
     });
   }
 });
 
-app.get("/login", (req, res) => {
+app.get("/auth/login", (req, res) => {
   const username = req.query.username;
 
   // encode username in base64
   const authValue = encodeBase64("username=" + username);
 
   // sent cookie
-  res.cookie("auth", authValue, {
-    sameSite: "Strict",
-  });
+  res.cookie("auth", authValue, {});
 
   res.send("Logged In!");
 });

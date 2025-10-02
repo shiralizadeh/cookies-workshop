@@ -44,3 +44,7 @@ Accessible on
 cd attacker-app
 npm start
 ```
+
+## Cookie Mind map
+
+![alt text](./assets/cookie-mindmap.png)
