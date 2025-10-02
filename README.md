@@ -18,6 +18,7 @@ sudo ifconfig lo0 alias 127.0.0.2 up
 
 ```shell
 127.0.0.1    victim.local
+127.0.0.1    sub.victim.local
 127.0.0.2    attacker.local
 ```
 
