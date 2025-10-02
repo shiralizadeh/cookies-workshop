@@ -23,10 +23,22 @@ sudo ifconfig lo0 alias 127.0.0.2 up
 
 ## Start
 
+### Start victim on 127.0.0.1
+
+Accessible on
+
+- [http://victim.local](http://victim.local)
+- [https://victim.local](https://victim.local)
+
 ```shell
 cd victim-app
 npm start
 ```
+
+Accessible on
+
+- [http://attacker.local](http://attacker.local)
+- [https://attacker.local](https://attacker.local)
 
 ```shell
 cd attacker-app

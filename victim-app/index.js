@@ -1,44 +1,68 @@
+import fs from "fs";
+import http from "http";
+import https from "https";
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { encrypt } from "./utils/encryption.js";
+import { decodeBase64, encodeBase64 } from "./utils/base64.js";
 
 const app = express();
 
 const IP = "127.0.0.1";
 
-import fs from "fs";
-import http from "http";
-import https from "https";
-var privateKey = fs.readFileSync("./certificates/localhost.key", "utf8");
-var certificate = fs.readFileSync("./certificates/localhost.crt", "utf8");
+var privateKey = fs.readFileSync("../certificates/localhost.key", "utf8");
+var certificate = fs.readFileSync("../certificates/localhost.crt", "utf8");
 
 var credentials = { key: privateKey, cert: certificate };
 
-// your express configuration here
-
-var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
-
-httpServer.listen(8080);
-httpsServer.listen(8443);
-
-// Middleware
+// Middlewares
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
-  res.send("Hello, World!");
+  const { message } = req.query;
+
+  fs.readFile("./index.html", "utf8", (err, data) => {
+    // Insert message as JSON string into the HTML (e.g., replace a placeholder)
+    const html = data.replace("{{message}}", message || "No message");
+
+    res.send(html);
+  });
+});
+
+app.get("/image.jpg", (req, res) => {
+  if (req.cookies.auth) {
+    res.sendFile("assets/image.jpg", { root: "./" });
+  } else {
+    res.sendFile("assets/placeholder.jpg", { root: "./" });
+  }
+});
+
+app.get("/api/get", (req, res) => {
+  if (req.cookies.auth) {
+    res.send({
+      message: `Hello world ${decodeBase64(req.cookies.auth)}!`,
+    });
+  } else {
+    res.send({
+      message: "Unauthorized",
+    });
+  }
 });
 
 app.get("/login", (req, res) => {
   const username = req.query.username;
 
+  // encode username in base64
+  const authValue = encodeBase64("username=" + username);
+
   // sent cookie
-  res.cookie("auth", "username=" + username, { httpOnly: true, secure: true });
+  res.cookie("auth", authValue, {
+    sameSite: "Strict",
+  });
 
   res.send("Logged In!");
 });
