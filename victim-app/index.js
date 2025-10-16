@@ -17,7 +17,7 @@ var certificate = fs.readFileSync("../certificates/localhost.crt", "utf8");
 var credentials = { key: privateKey, cert: certificate };
 
 // Middlewares
-app.use(cors());
+// app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -28,6 +28,7 @@ app.get("/", (req, res) => {
   fs.readFile("./index.html", "utf8", (err, data) => {
     // Insert message as JSON string into the HTML (e.g., replace a placeholder)
     const html = data
+      .replace("{{domain}}", req.hostname)
       .replace("{{message}}", message || "No message")
       .replace("{{cookie}}", req.cookies.auth || "No cookie");
 
@@ -43,19 +44,37 @@ app.get("/image.jpg", (req, res) => {
   }
 });
 
-app.get("/api/get", (req, res) => {
-  if (req.cookies.auth) {
-    res.send({
-      message: `Hello world ${decodeBase64(req.cookies.auth)}!`,
-    });
-  } else {
-    res.status(401).send({
-      message: "Unauthorized",
-    });
-  }
-});
+function withAuth(func) {
+  return (req, res) => {
+    if (req.cookies.auth) {
+      func(req, res);
+    } else {
+      res.status(401).send({
+        message: "Unauthorized",
+      });
+    }
+  };
+}
 
-app.get("/auth/login", (req, res) => {
+app.get(
+  "/api/get",
+  withAuth((req, res) => {
+    res.send({
+      message: `[GET] Hello world ${decodeBase64(req.cookies.auth)}!`,
+    });
+  })
+);
+
+app.post(
+  "/api/post",
+  withAuth((req, res) => {
+    res.send({
+      message: `[POST] Hello world ${decodeBase64(req.cookies.auth)}!`,
+    });
+  })
+);
+
+app.get("/login", (req, res) => {
   const username = req.query.username;
 
   // encode username in base64
@@ -64,7 +83,7 @@ app.get("/auth/login", (req, res) => {
   // sent cookie
   res.cookie("auth", authValue, {});
 
-  res.send("Logged In!");
+  res.send("<h1>Logged In!</h1><a href='/'>Go to Home</a>");
 });
 
 var httpServer = http.createServer(app);

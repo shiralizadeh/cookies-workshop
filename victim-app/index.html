@@ -6,14 +6,26 @@
     <title>Victim App</title>
   </head>
   <body>
-    <h1>Victim App</h1>
+    <h1>Victim App - {{domain}}</h1>
+    <a href="/login?username=admin">Login as Admin</a>
     <h2>cookie: {{cookie}}</h2>
     <h2>message: {{message}}</h2>
 
     <img src="./image.jpg" alt="Image" />
 
     <script>
-      fetch("./api/get");
+      // get
+      fetch("/api/get").then((response) =>
+        response.text().then((data) => console.log(data))
+      );
+
+      // post
+      fetch("/api/post", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((response) => response.text().then((data) => console.log(data)));
     </script>
   </body>
 </html>

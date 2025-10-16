@@ -33,7 +33,7 @@ Accessible on
 
 ```shell
 cd victim-app
-npm start
+sudo npm start
 ```
 
 Accessible on
@@ -43,7 +43,7 @@ Accessible on
 
 ```shell
 cd attacker-app
-npm start
+sudo npm start
 ```
 
 ## Cookie Mind map
