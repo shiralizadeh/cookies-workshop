@@ -44,6 +44,14 @@ app.get("/image.jpg", (req, res) => {
   }
 });
 
+app.get("/index.js", (req, res) => {
+  if (req.cookies.auth) {
+    res.sendFile("assets/index.js", { root: "./" });
+  } else {
+    res.sendStatus(401);
+  }
+});
+
 function withAuth(func) {
   return (req, res) => {
     if (req.cookies.auth) {
