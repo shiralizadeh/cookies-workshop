@@ -26,9 +26,14 @@ app.get("/", (req, res) => {
   const { message } = req.query;
 
   fs.readFile("./index.html", "utf8", (err, data) => {
+    const username = req.cookies.auth
+      ? decodeBase64(req.cookies.auth).split("=")[1]
+      : null;
+
     // Insert message as JSON string into the HTML (e.g., replace a placeholder)
     const html = data
       .replace("{{domain}}", req.hostname)
+      .replace("{{username}}", username || "No username")
       .replace("{{message}}", message || "No message")
       .replace("{{cookie}}", req.cookies.auth || "No cookie");
 
@@ -70,7 +75,7 @@ app.get(
     res.send({
       message: `[GET] Hello world ${decodeBase64(req.cookies.auth)}!`,
     });
-  })
+  }),
 );
 
 app.post(
@@ -79,7 +84,7 @@ app.post(
     res.send({
       message: `[POST] Hello world ${decodeBase64(req.cookies.auth)}!`,
     });
-  })
+  }),
 );
 
 app.get("/login", (req, res) => {
