@@ -8,6 +8,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Echo hello
         run: echo "hello"
 
@@ -21,3 +24,8 @@ jobs:
 
           echo "--- directories ---"
           find . -maxdepth 1 -type d | sort
+
+      - name: Show repository contents recursively
+        run: |
+          echo "--- repository tree ---"
+          find . -type d | sort
